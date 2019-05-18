@@ -1,0 +1,38 @@
+version: 2.1
+executors:
+  java-executor:
+    docker:
+    - image: circleci/openjdk:8-jdk
+jobs:
+  java-build:
+    executor: java-executor
+    steps:
+    - checkout
+    - run: mvn --batch-mode --update-snapshots clean package -DskipTests
+  java-unit-tests:
+    executor: java-executor
+    steps:
+    - checkout
+    - run: mvn --batch-mode --update-snapshots verify -DskipITs
+  java-integration-tests:
+    executor: java-executor
+    steps:
+    - setup_remote_docker
+    - checkout
+    - run: docker-compose -p wolpertinger-apache up --build -d
+    - run: mvn --batch-mode --update-snapshots clean package -DskipTests
+    - run: docker-compose -p wolpertinger-java up --build -d
+    - run: sleep 30
+    - run: mvn --batch-mode --update-snapshots verify -DskipUTs
+workflows:
+  version: 2
+  maven_build:
+    jobs:
+    - java-build
+    - java-unit-tests:
+        requires:
+        - java-build
+    - java-integration-tests:
+        type: approval
+        requires:
+        - java-build

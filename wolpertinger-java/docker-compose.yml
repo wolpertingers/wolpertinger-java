@@ -1,0 +1,24 @@
+version: '3.5'
+services:
+  mariadb:
+    container_name: wolpertinger-mariadb
+    image: mariadb:10.3.5
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
+    ports:
+    - 3306:3306
+    environment:
+      MYSQL_DATABASE: wolpertinger
+      MYSQL_ROOT_PASSWORD: wolpertinger
+  payara:
+    container_name: wolpertinger-payara
+    depends_on:
+    - mariadb
+    build:
+      context: .
+      dockerfile: src/main/docker/payara
+    ports:
+    - 8080:8080
+    - 4848:4848
+networks:
+  default:
+    name: wolpertinger

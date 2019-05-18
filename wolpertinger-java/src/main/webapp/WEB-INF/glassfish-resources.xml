@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
+        "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<resources>
+  <jdbc-resource pool-name="MariaDBPool" jndi-name="java:app/jdbc/hibernate" />
+  <jdbc-connection-pool name="MariaDBPool" res-type="javax.sql.DataSource" datasource-classname="org.mariadb.jdbc.MariaDbDataSource">
+    <property name="user" value="root" />
+    <property name="password" value="wolpertinger" />
+    <property name="url" value="jdbc:mysql://wolpertinger-mariadb:3306/wolpertinger" />
+  </jdbc-connection-pool>
+</resources>
