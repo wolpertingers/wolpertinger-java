@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "ecc92ac8-b8fd-4cad-ae74-24f11edc3dc1",
+		"name": "Order",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/wolpertinger-backend/rest/orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/wolpertinger-java/rest/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wolpertinger-java",
+						"rest",
+						"orders"
+					]
+				},
+				"description": "Get all orders."
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/wolpertinger-backend/rest/orders",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"images\": [\n        {\n            \"image\": {\n                \"id\": 1,\n                \"name\": \"wood\"\n            },\n            \"level\": 1\n        },\n        {\n            \"image\": {\n                \"id\": 2,\n                \"name\": \"fish\"\n            },\n            \"level\": 2\n        },\n        {\n            \"image\": {\n                \"id\": 3,\n                \"name\": \"t-rex\"\n            },\n            \"level\": 2\n        },\n        {\n            \"image\": {\n                \"id\": 4,\n                \"name\": \"sleeping_bag\"\n            },\n            \"level\": 3\n        },\n        {\n            \"image\": {\n                \"id\": 5,\n                \"name\": \"cowpat\"\n            },\n            \"level\": 3\n        },\n        {\n            \"image\": {\n                \"id\": 6,\n                \"name\": \"cheese\"\n            },\n            \"level\": 3\n        }\n    ],\n    \"orderer\": \"Postman\",\n    \"visible\": true\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/wolpertinger-java/rest/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wolpertinger-java",
+						"rest",
+						"orders"
+					]
+				},
+				"description": "Create new Order."
+			},
+			"response": []
+		}
+	]
+}
