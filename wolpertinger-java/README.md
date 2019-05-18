@@ -18,8 +18,10 @@ docker-compose up --build -d
 ## Rest-API access
 OpenAPI documentation: `{deployUrl}/openapi`
 
-### Image service 
-GET by name: `{deployUrl}/wolpertinger-java/rest/images`
+### Image service
+GET all: `{deployUrl}/wolpertinger-java/rest/images`
+
+GET by name: `{deployUrl}/wolpertinger-java/rest/images?name={imageName}`
 
 ### Order service
 GET all: `{deployUrl}/wolpertinger-java/rest/orders`
