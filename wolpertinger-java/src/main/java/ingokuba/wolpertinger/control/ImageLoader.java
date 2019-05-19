@@ -58,18 +58,28 @@ public class ImageLoader
             Document imageFolder = Jsoup.connect(url).get();
             for (Element element : imageFolder.select("li a")) {
                 String href = element.attr("href");
+                String fullUrl = getUrl(url + href);
                 if (href.startsWith("high")) {
-                    image.setHigh(url + href);
+                    image.setHigh(fullUrl);
                 }
                 else if (href.startsWith("medium")) {
-                    image.setMedium(url + href);
+                    image.setMedium(fullUrl);
                 }
                 else if (href.startsWith("low")) {
-                    image.setLow(url + href);
+                    image.setLow(fullUrl);
                 }
             }
         } catch (IOException e) {
             throw new EJBException("Cannot connect to " + url, e);
         }
+    }
+
+    /**
+     * If the URL contains 'wolpertinger-apache' as the host, replace it with 'localhost' so it can
+     * be accessed by the frontend.
+     */
+    private String getUrl(String url)
+    {
+        return url.replace("wolpertinger-apache", "localhost");
     }
 }
