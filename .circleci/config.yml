@@ -19,10 +19,10 @@ jobs:
     steps:
     - setup_remote_docker
     - checkout
-    - run: docker-compose -p wolpertinger-apache up --build -d
+    - run: docker-compose -f wolpertinger-apache/docker-compose.yml up --build -d
     - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots clean package -DskipTests
-    - run: docker-compose -p wolpertinger-java up --build -d
-    - run: sleep 30
+    - run: docker-compose -f wolpertinger-java/docker-compose.yml up --build -d
+    - run: sleep 60
     - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots verify -DskipUTs
 workflows:
   version: 2
@@ -32,7 +32,9 @@ workflows:
     - java-unit-tests:
         requires:
         - java-build
-    - java-integration-tests:
+    - run-integration-tests:
         type: approval
+    - java-integration-tests:
         requires:
         - java-build
+        - run-integration-tests
