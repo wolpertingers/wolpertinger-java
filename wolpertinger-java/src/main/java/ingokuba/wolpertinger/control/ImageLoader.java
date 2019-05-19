@@ -40,7 +40,7 @@ public class ImageLoader
                         continue;
                     }
                     String subUrl = element.attr("href");
-                    String imageName = subUrl.replace("/", "");
+                    String imageName = subUrl.replace("/", "").replace("%20", " ");
                     LOGGER.info(() -> "Found image: " + imageName);
                     Image image = new Image().setName(imageName);
                     getImages(imageUrl + subUrl, image);
@@ -75,11 +75,13 @@ public class ImageLoader
     }
 
     /**
-     * If the URL contains 'wolpertinger-apache' as the host, replace it with 'localhost' so it can
-     * be accessed by the frontend.
+     * Creates an accessible URL:
+     * <ul>
+     * <li>replaces 'wolpertinger-apache' with 'localhost' so it can be accessed by the frontend
+     * <li>replaces '%20' with Space
      */
     private String getUrl(String url)
     {
-        return url.replace("wolpertinger-apache", "localhost");
+        return url.replace("wolpertinger-apache", "localhost").replace("%20", " ");
     }
 }
