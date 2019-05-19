@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  vue:
+    container_name: wolpertinger-vue
+    image: nginx:stable-alpine
+    command: nginx -g "daemon off;"
+    ports:
+      - 3000:80
+    volumes:
+      - ./app/dist/:/usr/share/nginx/html
+networks:
+  default:
+    name: wolpertinger
