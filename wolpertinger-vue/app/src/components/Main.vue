@@ -8,21 +8,36 @@
             <v-flex xs1>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="tertiary1" v-bind:src="configuration.tertiary1" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="tertiary1"
+                    v-bind:src="configuration.tertiary1"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
             <v-flex xs3>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="main" v-bind:src="configuration.main" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="main"
+                    v-bind:src="configuration.main"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
             <v-flex xs1>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="tertiary2" v-bind:src="configuration.tertiary2" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="tertiary2"
+                    v-bind:src="configuration.tertiary2"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
@@ -31,14 +46,24 @@
             <v-flex xs2>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="secondary1" v-bind:src="configuration.secondary1" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="secondary1"
+                    v-bind:src="configuration.secondary1"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
             <v-flex xs2>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="secondary2" v-bind:src="configuration.secondary2" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="secondary2"
+                    v-bind:src="configuration.secondary2"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
@@ -47,7 +72,12 @@
             <v-flex xs1>
               <v-img :src="circle">
                 <drop @drop="handleDrop">
-                  <v-img id="tertiary3" v-bind:src="configuration.tertiary3" aspect-ratio="1"></v-img>
+                  <v-img
+                    id="tertiary3"
+                    v-bind:src="configuration.tertiary3"
+                    aspect-ratio="1"
+                    @click="setUrlParam($event.currentTarget.id, null)"
+                  ></v-img>
                 </drop>
               </v-img>
             </v-flex>
@@ -152,8 +182,18 @@ export default {
         return;
       }
       const paramName = event.target.offsetParent.id;
+      this.setUrlParam(paramName, image.name);
+    },
+    /**
+     * Set query parameter to a given value and reload page.
+     */
+    setUrlParam(key, value) {
       var params = new URLSearchParams(window.location.search);
-      params.set(paramName, image.name);
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
       var newRelativePathQuery =
         window.location.pathname + "?" + params.toString();
       history.pushState(null, "", newRelativePathQuery);
