@@ -16,7 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -49,11 +51,9 @@ public class Order
     @Length(max = 512, message = "{Order.comment.Length}")
     private String               comment;
 
-    @ValidReference(levelConstraints = {
-            @LevelConstraint(message = "{Order.images.level1}", level = 1, amount = 1),
-            @LevelConstraint(message = "{Order.images.level2}", level = 2, amount = 2),
-            @LevelConstraint(message = "{Order.images.level3}", level = 3, amount = 3)
-    })
+    @Valid
+    @ValidReference
+    @Size(min = 6, max = 6)
     @OneToMany(fetch = EAGER, orphanRemoval = true, cascade = ALL, mappedBy = ImageReference.Fields.order)
     private List<ImageReference> images;
 

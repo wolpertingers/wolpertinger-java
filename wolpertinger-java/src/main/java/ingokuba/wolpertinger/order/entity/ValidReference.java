@@ -23,6 +23,4 @@ public @interface ValidReference
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    LevelConstraint[] levelConstraints();
 }

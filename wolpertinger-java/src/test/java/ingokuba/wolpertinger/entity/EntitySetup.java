@@ -20,7 +20,7 @@ public class EntitySetup
 
     public static Order validOrder()
     {
-        return new Order().setOrderer("User " + suffix).setImages(images(1, 2, 2, 3, 3, 3));
+        return new Order().setOrderer("User " + suffix).setImages(images(1, 2, 3, 4, 5, 6));
     }
 
     public static ImageReference validImageReference(Integer level)
