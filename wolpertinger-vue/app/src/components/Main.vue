@@ -3,28 +3,40 @@
     <v-layout row wrap>
       <v-flex xs6 pa-3>
         <v-img :src="require('./shirt.png')" aspect-ratio="1" class="elevation-3 align-center">
-          <v-layout row wrap justify-center>
+          <v-layout row wrap justify-center align-end>
             <v-flex xs1>
-              <v-img v-bind:src="configuration.tertiary1" aspect-ratio="1"></v-img>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.tertiary1" aspect-ratio="1"></v-img>
+              </v-img>
             </v-flex>
-          </v-layout>
-          <v-layout row wrap justify-center>
+            <v-flex xs3>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.main" aspect-ratio="1"></v-img>
+              </v-img>
+            </v-flex>
             <v-flex xs1>
-              <v-img v-bind:src="configuration.tertiary2" aspect-ratio="1"></v-img>
-            </v-flex>
-            <v-flex xs4>
-              <v-img v-bind:src="configuration.main" aspect-ratio="1"></v-img>
-            </v-flex>
-            <v-flex xs1>
-              <v-img v-bind:src="configuration.tertiary3" aspect-ratio="1"></v-img>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.tertiary2" aspect-ratio="1"></v-img>
+              </v-img>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-center>
             <v-flex xs2>
-              <v-img v-bind:src="configuration.secondary1" aspect-ratio="1"></v-img>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.secondary1" aspect-ratio="1"></v-img>
+              </v-img>
             </v-flex>
             <v-flex xs2>
-              <v-img v-bind:src="configuration.secondary2" aspect-ratio="1"></v-img>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.secondary2" aspect-ratio="1"></v-img>
+              </v-img>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap justify-center>
+            <v-flex xs1>
+              <v-img :src="circle">
+                <v-img v-bind:src="configuration.tertiary3" aspect-ratio="1"></v-img>
+              </v-img>
             </v-flex>
           </v-layout>
         </v-img>
@@ -45,11 +57,12 @@
 
 <script>
 import axios from "axios";
-
+import circle from "./circle.png";
 export default {
   name: "Main",
   data() {
     return {
+      circle: circle,
       imageService: process.env.VUE_APP_BACKEND_URL + "images",
       images: [],
       error: "",
