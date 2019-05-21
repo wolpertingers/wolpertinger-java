@@ -99,37 +99,37 @@ public class OrderTest
     @Test
     public void should_fail_for_missing_mainImage()
     {
-        Order order = validOrder().setImages(images(2, 2, 3, 3, 3));
+        Order order = validOrder().setImages(images(1, 2, 3, 4, 5, 5));
 
         Set<ConstraintViolation<Order>> violations = validator.validate(order);
 
         assertThat(violations.size(), equalTo(1));
         ConstraintViolation<Order> violation = violations.iterator().next();
-        assertThat(violation.getMessage(), containsString("cannot be missing"));
+        assertThat(violation.getMessage(), containsString("more than once"));
     }
 
     @Test
-    public void should_fail_for_missing_secondary_Image()
+    public void should_fail_for_invalid_reference_level()
     {
-        Order order = validOrder().setImages(images(1, 2, 3, 3, 3));
+        Order order = validOrder().setImages(images(1, 2, 3, 4, 5, 7));
 
         Set<ConstraintViolation<Order>> violations = validator.validate(order);
 
         assertThat(violations.size(), equalTo(1));
         ConstraintViolation<Order> violation = violations.iterator().next();
-        assertThat(violation.getMessage(), containsString("must be set"));
+        assertThat(violation.getMessage(), containsString("between 1 and 6"));
     }
 
     @Test
-    public void should_fail_for_missing_tertiary_Image()
+    public void should_fail_for_missing_image()
     {
-        Order order = validOrder().setImages(images(1, 2, 2, 3, 3));
+        Order order = validOrder().setImages(images(1, 2, 3, 4, 5));
 
         Set<ConstraintViolation<Order>> violations = validator.validate(order);
 
         assertThat(violations.size(), equalTo(1));
         ConstraintViolation<Order> violation = violations.iterator().next();
-        assertThat(violation.getMessage(), containsString("must be set"));
+        assertThat(violation.getMessage(), containsString("between 6 and 6"));
     }
 
     @Test

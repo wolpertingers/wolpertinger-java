@@ -13,7 +13,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 public class WolpertingerClient
 {
 
-    private static final String BASE_URL = "http://localhost:8080/wolpertinger-backend/rest";
+    private static final String BASE_URL = "http://localhost:8080/wolpertinger-java/rest";
     private String              resource;
 
     public WolpertingerClient(String resource)

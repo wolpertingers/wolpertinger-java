@@ -43,6 +43,6 @@ public class ImageReference
     private Order   order;
 
     @NotNull
-    @Range(min = 1, max = 3)
+    @Range(min = 1, max = 6)
     private Integer level;
 }

@@ -38,10 +38,10 @@ public class OrderResourceIT
         List<ImageReference> references = new ArrayList<>();
         references.add(validImageReference(1).setImage(images[0]));
         references.add(validImageReference(2).setImage(images[1]));
-        references.add(validImageReference(2).setImage(images[2]));
-        references.add(validImageReference(3).setImage(images[3]));
-        references.add(validImageReference(3).setImage(images[4]));
-        references.add(validImageReference(3).setImage(images[5]));
+        references.add(validImageReference(3).setImage(images[2]));
+        references.add(validImageReference(4).setImage(images[3]));
+        references.add(validImageReference(5).setImage(images[4]));
+        references.add(validImageReference(6).setImage(images[5]));
 
         Order order = validOrder().setVisible(true).setImages(references);
 
