@@ -29,3 +29,10 @@ GET all: `{deployUrl}/wolpertinger-java/rest/orders`
 GET by id: `{deployUrl}/wolpertinger-java/rest/orders/{id}`
 
 POST to create: `{deployUrl}/wolpertinger-java/rest/orders`
+
+### Token service
+POST to create: (protected) `{deployUrl}/wolpertinger-java/rest/tokens` (no data body)
+
+GET all: (protected) `{deployUrl}/wolpertinger-java/rest/tokens`
+
+GET by value: `{deployUrl}/wolpertinger-java/rest/tokens/{value}`

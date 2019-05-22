@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -31,7 +32,8 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 @Table(name = "OrderTable", uniqueConstraints = {
         @UniqueConstraint(name = "Order_orderer_unique", columnNames = {Order.Fields.orderer}),
-        @UniqueConstraint(name = "Order_configuration_unique", columnNames = {Order.Fields.configuration})
+        @UniqueConstraint(name = "Order_configuration_unique", columnNames = {Order.Fields.configuration}),
+        @UniqueConstraint(name = "Order_token_unique", columnNames = {Order.Fields.token + "_id"})
 })
 @Entity
 public class Order
@@ -58,6 +60,11 @@ public class Order
     private List<ImageReference> images;
 
     private String               configuration;
+
+    @Valid
+    @NotNull(message = "{Order.token.NotNull}")
+    @OneToOne(optional = false)
+    private Token                token;
 
     /**
      * Workaround setter for back reference on {@link ImageReference#order}
