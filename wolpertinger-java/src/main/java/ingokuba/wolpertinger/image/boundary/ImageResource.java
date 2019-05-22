@@ -30,7 +30,7 @@ public class ImageResource
     public Response get(@QueryParam(Image.Fields.name) String name)
     {
         if (name != null) {
-            Image image = repository.get(name);
+            Image image = repository.byNaturalId(Image.Fields.name, name);
             if (image == null) {
                 throw new NotFoundException("Image with name '" + name + "' was not found.");
             }

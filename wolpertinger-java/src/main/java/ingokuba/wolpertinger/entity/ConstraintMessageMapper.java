@@ -2,6 +2,7 @@ package ingokuba.wolpertinger.entity;
 
 import ingokuba.wolpertinger.image.entity.Image;
 import ingokuba.wolpertinger.order.entity.Order;
+import ingokuba.wolpertinger.order.entity.Token;
 
 public class ConstraintMessageMapper
 {
@@ -19,7 +20,9 @@ public class ConstraintMessageMapper
             {"Order_orderer_unique", Order.Fields.orderer, "Orderer name must be unique."},
             {"Order_configuration_unique", Order.Fields.configuration, "This configuration has already been created."},
             {"ImageReference_level_unique", Order.Fields.images, "Image reference level is contained more than once."},
-            {"ImageReference_image_unique", Order.Fields.images, "Image is referenced more than once."}
+            {"ImageReference_image_unique", Order.Fields.images, "Image is referenced more than once."},
+            {"Token_value_unique", Token.Fields.value, "Token has to be unique."},
+            {"Order_token_unique", Order.Fields.token, "A token can only be referenced once."}
     };
 
     private String                  attribute;
