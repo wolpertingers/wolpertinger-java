@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -23,6 +25,10 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @Accessors(chain = true)
 @FieldNameConstants
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "ImageReference_image_unique", columnNames = {ImageReference.Fields.image + "_id", ImageReference.Fields.order + "_id"}),
+        @UniqueConstraint(name = "ImageReference_level_unique", columnNames = {ImageReference.Fields.level, ImageReference.Fields.order + "_id"})
+})
 @Entity
 public class ImageReference
 {

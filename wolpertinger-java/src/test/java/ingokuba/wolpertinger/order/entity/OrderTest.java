@@ -18,6 +18,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import ingokuba.wolpertinger.image.entity.Image;
@@ -97,7 +98,8 @@ public class OrderTest
     }
 
     @Test
-    public void should_fail_for_missing_mainImage()
+    @Disabled("Cannot be tested without database -> unique constraint")
+    public void should_fail_for_duplicate_image_reference()
     {
         Order order = validOrder().setImages(images(1, 2, 3, 4, 5, 5));
 

@@ -30,7 +30,8 @@ import lombok.experimental.FieldNameConstants;
 @Accessors(chain = true)
 @FieldNameConstants
 @Table(name = "OrderTable", uniqueConstraints = {
-        @UniqueConstraint(name = "Order_orderer_unique", columnNames = {Order.Fields.orderer})
+        @UniqueConstraint(name = "Order_orderer_unique", columnNames = {Order.Fields.orderer}),
+        @UniqueConstraint(name = "Order_configuration_unique", columnNames = {Order.Fields.configuration})
 })
 @Entity
 public class Order
@@ -52,7 +53,6 @@ public class Order
     private String               comment;
 
     @Valid
-    @ValidReference
     @Size(min = 6, max = 6)
     @OneToMany(fetch = EAGER, orphanRemoval = true, cascade = ALL, mappedBy = ImageReference.Fields.order)
     private List<ImageReference> images;
