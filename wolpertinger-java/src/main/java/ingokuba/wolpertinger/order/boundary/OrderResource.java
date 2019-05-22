@@ -4,6 +4,7 @@ import static ingokuba.wolpertinger.error.boundary.ErrorUtil.NO_ENTITY;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.CREATED;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -19,6 +20,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import ingokuba.wolpertinger.control.RepositoryException;
+import ingokuba.wolpertinger.error.boundary.ErrorUtil;
+import ingokuba.wolpertinger.error.boundary.SQLExceptionMapper;
 import ingokuba.wolpertinger.order.control.OrderRepository;
 import ingokuba.wolpertinger.order.entity.Order;
 
@@ -57,7 +61,15 @@ public class OrderResource
         if (order == null) {
             throw new BadRequestException(NO_ENTITY);
         }
-        repository.store(order);
+        try {
+            repository.store(order);
+        } catch (RepositoryException e) {
+            SQLException sqlException = ErrorUtil.getExceptionFromCause(e, SQLException.class);
+            if (sqlException != null) {
+                return new SQLExceptionMapper().toResponse(sqlException);
+            }
+            throw e;
+        }
         return Response.status(CREATED).entity(order).build();
     }
 }
