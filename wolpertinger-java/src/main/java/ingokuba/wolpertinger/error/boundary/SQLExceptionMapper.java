@@ -39,7 +39,7 @@ public class SQLExceptionMapper
         ConstraintMessageMapper mapper = new ConstraintMessageMapper(exception.getMessage());
         return error().setName(exception.getClass().getName())
             .setField(mapper.getAttribute())
-            .setTemplate(mapper.getConstraint())
+            .setTemplate(mapper.getTemplate())
             .setMessage(mapper.getMessage());
     }
 }

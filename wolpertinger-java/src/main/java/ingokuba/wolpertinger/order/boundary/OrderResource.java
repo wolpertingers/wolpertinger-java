@@ -2,7 +2,6 @@ package ingokuba.wolpertinger.order.boundary;
 
 import static ingokuba.wolpertinger.error.boundary.ErrorUtil.NO_ENTITY;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.Status.CREATED;
 
 import java.util.List;
@@ -17,10 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import ingokuba.wolpertinger.order.control.OrderRepository;
@@ -60,11 +56,6 @@ public class OrderResource
     {
         if (order == null) {
             throw new BadRequestException(NO_ENTITY);
-        }
-        MultivaluedMap<String, String> parameters = new MultivaluedHashMap<>();
-        parameters.add(Order.Fields.configuration, order.getConfiguration());
-        if (!repository.search(parameters).isEmpty()) {
-            throw new WebApplicationException("Order with this configuration already exists.", CONFLICT);
         }
         repository.store(order);
         return Response.status(CREATED).entity(order).build();

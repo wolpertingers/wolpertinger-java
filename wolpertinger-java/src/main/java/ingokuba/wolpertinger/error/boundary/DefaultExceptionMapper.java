@@ -4,6 +4,7 @@ import static ingokuba.wolpertinger.error.boundary.Error.error;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -17,13 +18,16 @@ public class DefaultExceptionMapper
 {
 
     @Context
-    private Providers providers;
+    private Providers           providers;
+
+    private static final Logger LOGGER = Logger.getLogger(DefaultExceptionMapper.class.getName());
 
     @Override
     public Response toResponse(Throwable throwable)
     {
         Response response = getMappedResponse(throwable);
         if (response == null) {
+            LOGGER.warning("Couldn't find matching exception mapper for: " + getName(throwable));
             ErrorResponse error = new ErrorResponse().setErrors(fromStackTrace(throwable, new ArrayList<>()));
             response = Response.serverError().entity(error).build();
         }
@@ -59,9 +63,30 @@ public class DefaultExceptionMapper
             return null;
         }
         ExceptionMapper<Throwable> exceptionMapper = (ExceptionMapper<Throwable>)providers.getExceptionMapper(throwable.getClass());
-        if (exceptionMapper != null && !(exceptionMapper instanceof DefaultExceptionMapper)) {
+        if (exceptionMapper != null && !(exceptionMapper instanceof DefaultExceptionMapper) && checkPackage(exceptionMapper)) {
+            LOGGER.info("Found ExceptionMapper: " + exceptionMapper.getClass().getName());
             return exceptionMapper.toResponse(throwable);
         }
         return getMappedResponse(throwable.getCause());
+    }
+
+    /**
+     * Checks whether the package of the object matches the package of this class.
+     * 
+     * @return true if object is in this package.
+     */
+    private boolean checkPackage(Object object)
+    {
+        return getClass().getPackage().equals(object.getClass().getPackage());
+    }
+
+    /**
+     * Get class name of the throwable.
+     * 
+     * @return Full class name or 'unknown'.
+     */
+    private String getName(Throwable throwable)
+    {
+        return throwable == null ? "unknown" : throwable.getClass().getName();
     }
 }
