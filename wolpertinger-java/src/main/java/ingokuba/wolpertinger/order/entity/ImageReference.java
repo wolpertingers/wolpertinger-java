@@ -38,7 +38,7 @@ public class ImageReference
     @SequenceGenerator(name = "reference_generator", sequenceName = "reference_sequence")
     private Long    id;
 
-    @NotNull(message = "{ImageReference.image.NotNull}")
+    @NotNull
     @ManyToOne(optional = false)
     private Image   image;
 
@@ -48,7 +48,7 @@ public class ImageReference
     @ManyToOne(fetch = LAZY)
     private Order   order;
 
-    @NotNull(message = "{ImageReference.level.NotNull}")
-    @Range(message = "{ImageReference.level.Range}", min = 1, max = 6)
+    @NotNull
+    @Range(min = 1, max = 6)
     private Integer level;
 }
