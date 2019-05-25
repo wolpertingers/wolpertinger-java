@@ -4,6 +4,7 @@ import static ingokuba.wolpertinger.error.boundary.ErrorUtil.NO_ENTITY;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.CREATED;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +21,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.mail.EmailException;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import ingokuba.wolpertinger.control.EmailService;
 import ingokuba.wolpertinger.control.RepositoryException;
+import ingokuba.wolpertinger.error.boundary.DefaultExceptionMapper;
 import ingokuba.wolpertinger.error.boundary.ErrorUtil;
 import ingokuba.wolpertinger.error.boundary.SQLExceptionMapper;
 import ingokuba.wolpertinger.order.control.OrderRepository;
@@ -33,6 +39,15 @@ public class OrderResource
 
     @Inject
     private OrderRepository repository;
+    @Inject
+    @ConfigProperty(name = "wolpertinger.OrderResource.recipients")
+    private String          recipients;
+    @Inject
+    @ConfigProperty(name = "wolpertinger.OrderResource.username")
+    private String          username;
+    @Inject
+    @ConfigProperty(name = "wolpertinger.OrderResource.password")
+    private String          password;
 
     @GET
     @Produces(APPLICATION_JSON)
@@ -63,12 +78,15 @@ public class OrderResource
         }
         try {
             repository.store(order);
-        } catch (RepositoryException e) {
-            SQLException sqlException = ErrorUtil.getExceptionFromCause(e, SQLException.class);
+            EmailService.sendEmail(order, username, password, recipients.split(","));
+        } catch (RepositoryException re) {
+            SQLException sqlException = ErrorUtil.getExceptionFromCause(re, SQLException.class);
             if (sqlException != null) {
                 return new SQLExceptionMapper().toResponse(sqlException);
             }
-            throw e;
+            throw re;
+        } catch (IOException | EmailException ee) {
+            return new DefaultExceptionMapper().toResponse(ee);
         }
         return Response.status(CREATED).entity(order).build();
     }

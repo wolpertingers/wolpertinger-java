@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -53,6 +54,9 @@ public class Order
 
     @Length(max = 512, message = "{Order.comment.Length}")
     private String               comment;
+
+    @URL(message = "{Order.url.format}")
+    private String               url;
 
     @Valid
     @Size(min = 6, max = 6)
