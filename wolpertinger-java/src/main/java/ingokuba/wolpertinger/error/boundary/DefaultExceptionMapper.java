@@ -25,13 +25,26 @@ public class DefaultExceptionMapper
     @Override
     public Response toResponse(Throwable throwable)
     {
+        logStackTrace(throwable);
         Response response = getMappedResponse(throwable);
+
         if (response == null) {
             LOGGER.warning("Couldn't find matching exception mapper for: " + getName(throwable));
             ErrorResponse error = new ErrorResponse().setErrors(fromStackTrace(throwable, new ArrayList<>()));
             response = Response.serverError().entity(error).build();
         }
         return response;
+    }
+
+    private void logStackTrace(Throwable throwable)
+    {
+        if (throwable != null) {
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement stackTrace : throwable.getStackTrace()) {
+                sb.append(stackTrace.toString() + "\n");
+            }
+            LOGGER.info(sb.toString());
+        }
     }
 
     /**
@@ -59,7 +72,7 @@ public class DefaultExceptionMapper
     @SuppressWarnings("unchecked")
     private Response getMappedResponse(Throwable throwable)
     {
-        if (throwable == null) {
+        if (throwable == null || providers == null) {
             return null;
         }
         LOGGER.info("Looking for ExceptionMapper for: " + throwable.getClass().getName());
