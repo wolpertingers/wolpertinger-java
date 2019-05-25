@@ -92,10 +92,11 @@
               <span class="headline">Order</span>
             </v-card-title>
             <v-card-text>
-              <v-container grid-list-md>
+              <v-container grid-list>
                 <v-layout wrap>
-                  <v-flex xs12 sm6 md4>
+                  <v-flex>
                     <v-text-field id="orderer" label="Name" required></v-text-field>
+                    <v-text-field id="token" label="Token" required></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -104,6 +105,19 @@
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" flat @click="orderDialog = false">Cancel</v-btn>
               <v-btn color="blue darken-1" flat @click="order">Order</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="confirmDialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Confirm</span>
+            </v-card-title>
+            <v-card-text>Are you sure? Only one order can be placed per token. This cannot be undone.</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="confirmDialog = false">Cancel</v-btn>
+              <v-btn color="blue darken-1" flat @click="confirmOrder">Confirm</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -138,6 +152,7 @@ export default {
       circle: circle,
       imageService: process.env.VUE_APP_BACKEND_URL + "images",
       orderService: process.env.VUE_APP_BACKEND_URL + "orders",
+      tokenService: process.env.VUE_APP_BACKEND_URL + "tokens",
       images: [],
       configuration: {
         main: "",
@@ -155,7 +170,10 @@ export default {
       button: {
         active: false
       },
-      orderDialog: false
+      orderDialog: false,
+      orderer: null,
+      accessToken: null,
+      confirmDialog: false
     };
   },
   created() {
@@ -293,9 +311,28 @@ export default {
       this.snackbar.show = true;
     },
     order() {
+      this.orderer = document.getElementById("orderer").value;
+      const tokenValue = document.getElementById("token").value;
+      axios
+        .get(`${this.tokenService}/${tokenValue}`)
+        .then(response => {
+          this.accessToken = response.data;
+          if (!this.accessToken) {
+            this.showSnackbar("Invalid token.", 3000);
+            return;
+          }
+          this.confirmDialog = true;
+        })
+        .catch(error => {
+          this.handleError(error);
+        });
+      this.orderDialog = false;
+    },
+    confirmOrder() {
       const order = {
-        orderer: document.getElementById("orderer").value,
+        orderer: this.orderer,
         visible: true,
+        token: this.accessToken,
         images: [
           {
             level: 1,
@@ -336,7 +373,7 @@ export default {
         .catch(error => {
           this.handleError(error);
         });
-      this.orderDialog = false;
+      this.confirmDialog = false;
     }
   }
 };

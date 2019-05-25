@@ -14,6 +14,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.hibernate.Session;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,6 +45,16 @@ public abstract class Repository<E>
     public E get(Object primaryKey)
     {
         return entityManager.find(entityType, primaryKey);
+    }
+
+    public E byNaturalId(String name, Object value)
+    {
+        try {
+            Session session = (Session)getEntityManager().getDelegate();
+            return session.byNaturalId(entityType).using(name, value).load();
+        } catch (Exception e) {
+            throw new RepositoryException("Failed to retrieve " + entityType.getSimpleName() + " by natural id.", e);
+        }
     }
 
     public E store(E entity)

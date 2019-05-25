@@ -6,6 +6,7 @@ import java.util.List;
 import ingokuba.wolpertinger.image.entity.Image;
 import ingokuba.wolpertinger.order.entity.ImageReference;
 import ingokuba.wolpertinger.order.entity.Order;
+import ingokuba.wolpertinger.order.entity.Token;
 
 public class EntitySetup
 {
@@ -20,7 +21,7 @@ public class EntitySetup
 
     public static Order validOrder()
     {
-        return new Order().setOrderer("User " + suffix).setImages(images(1, 2, 3, 4, 5, 6));
+        return new Order().setOrderer("User " + suffix).setImages(images(1, 2, 3, 4, 5, 6)).setToken(new Token());
     }
 
     public static ImageReference validImageReference(Integer level)

@@ -119,7 +119,7 @@ public class OrderTest
 
         assertThat(violations.size(), equalTo(1));
         ConstraintViolation<Order> violation = violations.iterator().next();
-        assertThat(violation.getMessage(), containsString("between 1 and 6"));
+        assertThat(violation.getMessage(), containsString("from 1 to 6"));
     }
 
     @Test

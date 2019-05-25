@@ -62,6 +62,7 @@ public class DefaultExceptionMapper
         if (throwable == null) {
             return null;
         }
+        LOGGER.info("Looking for ExceptionMapper for: " + throwable.getClass().getName());
         ExceptionMapper<Throwable> exceptionMapper = (ExceptionMapper<Throwable>)providers.getExceptionMapper(throwable.getClass());
         if (exceptionMapper != null && !(exceptionMapper instanceof DefaultExceptionMapper) && checkPackage(exceptionMapper)) {
             LOGGER.info("Found ExceptionMapper: " + exceptionMapper.getClass().getName());
