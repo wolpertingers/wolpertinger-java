@@ -333,6 +333,7 @@ export default {
         orderer: this.orderer,
         visible: true,
         token: this.accessToken,
+        url: window.location.href,
         images: [
           {
             level: 1,

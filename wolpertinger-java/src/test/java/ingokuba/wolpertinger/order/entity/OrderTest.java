@@ -31,7 +31,7 @@ public class OrderTest
     @Test
     public void should_accept_valid_order_with_all_attributes()
     {
-        Order order = validOrder().setId(2L).setComment("This is a comment.");
+        Order order = validOrder().setId(2L).setComment("This is a comment.").setUrl("http://wolpertinger-vue.com/images?param=test");
 
         Set<ConstraintViolation<Order>> violations = validator.validate(order);
 
@@ -164,5 +164,17 @@ public class OrderTest
         String references = order.getConfiguration();
 
         assertThat(references, equalTo("[1,2]"));
+    }
+
+    @Test
+    public void should_fail_for_invalid_url()
+    {
+        Order order = validOrder().setUrl("no url");
+
+        Set<ConstraintViolation<Order>> violations = validator.validate(order);
+
+        assertThat(violations.size(), equalTo(1));
+        ConstraintViolation<Order> violation = violations.iterator().next();
+        assertThat(violation.getMessage(), containsString("invalid format"));
     }
 }
