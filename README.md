@@ -1,20 +1,36 @@
-# <img src="logo.png" width="100"/> Wolpertinger
-### Microservice to order custom shirts :shirt:
+# <img src="logo.png" width="100"/> Wolpertinger JavaEE backend
 
-Users can design custom shirts with multiple pictures in three different sizes.
-Orders will be sent to the configured email addresses.
+## Project setup
+The project is built with maven and deployed in docker containers.
 
-Available pictures can be found [here](wolpertinger-apache/images).
-
-### Project setup
-The [Vue.js frontend](wolpertinger-vue) communicates with the backend ([Java](wolpertinger-java)) via Rest-API.
-The backend provides links to the pictures on an [Apache HTTP server](wolpertinger-apache) which the frontend can display.
-
-<img src="project-layout.png" width="50%"/>
-
-For each successful order an email to configured recipients will be sent via Gmail-SMTP.
-### Deploy project
+### Build the .war
 ```
-./deploy.sh
+mvn -U clean package -DskipTests
 ```
-Builds projects and starts docker containers.
+
+### Start docker containers
+```
+docker-compose up --build -d
+```
+
+## Rest-API access
+OpenAPI documentation: `{deployUrl}/openapi`
+
+### Image service
+GET all: `{deployUrl}/wolpertinger-java/rest/images`
+
+GET by name: `{deployUrl}/wolpertinger-java/rest/images?name={imageName}`
+
+### Order service
+GET all: `{deployUrl}/wolpertinger-java/rest/orders`
+
+GET by id: `{deployUrl}/wolpertinger-java/rest/orders/{id}`
+
+POST to create: `{deployUrl}/wolpertinger-java/rest/orders`
+
+### Token service
+POST to create: (protected) `{deployUrl}/wolpertinger-java/rest/tokens` (no data body)
+
+GET all: (protected) `{deployUrl}/wolpertinger-java/rest/tokens`
+
+GET by value: `{deployUrl}/wolpertinger-java/rest/tokens/{value}`
