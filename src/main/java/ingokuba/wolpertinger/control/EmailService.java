@@ -9,8 +9,12 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail.util.IDNEmailAddressConverter;
 
 import ingokuba.wolpertinger.order.entity.ImageReference;
 import ingokuba.wolpertinger.order.entity.Order;
@@ -26,11 +30,17 @@ public class EmailService
     public static void sendEmail(Order order, String username, String password, String... recipients)
         throws EmailException, IOException
     {
+        if (recipients.length < 1) {
+            return;
+        }
         ClassLoader classLoader = order.getClass().getClassLoader();
         String template = convert(classLoader.getResourceAsStream("email.html"));
         String content = format(template, order.getOrderer(), order.getToken().getValue(), order.getUrl(),
                                 getImageNames(order.getImages()));
         for (String recipient : recipients) {
+            if (!isValid(recipient)) {
+                continue;
+            }
             HtmlEmail email = new HtmlEmail();
             email.setHostName("smtp.gmail.com");
             email.setSmtpPort(587);
@@ -44,6 +54,21 @@ public class EmailService
             email.setTextMsg("Your email client does not support HTML messages.");
             email.send();
         }
+    }
+
+    /**
+     * Check whether email has a valid format
+     * 
+     * @param email The email address, e.g. 'test@gmail.com'
+     */
+    private static boolean isValid(String email)
+    {
+        try {
+            new InternetAddress(new IDNEmailAddressConverter().toASCII(email));
+        } catch (AddressException e) {
+            return false;
+        }
+        return true;
     }
 
     /**

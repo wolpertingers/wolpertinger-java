@@ -8,22 +8,22 @@ jobs:
     executor: java-executor
     steps:
     - checkout
-    - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots clean package -DskipTests
+    - run: mvn --batch-mode --update-snapshots clean package -DskipTests
   java-unit-tests:
     executor: java-executor
     steps:
     - checkout
-    - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots verify -DskipITs
+    - run: mvn --batch-mode --update-snapshots verify -DskipITs
   java-integration-tests:
     executor: java-executor
     steps:
     - setup_remote_docker
     - checkout
-    - run: docker-compose -f wolpertinger-apache/docker-compose.yml up --build -d
-    - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots clean package -DskipTests
-    - run: docker-compose -f wolpertinger-java/docker-compose.yml up --build -d
+    - run: docker-compose up --build -d
+    - run: mvn --batch-mode --update-snapshots clean package -DskipTests
+    - run: docker-compose up --build -d
     - run: sleep 60
-    - run: mvn -f wolpertinger-java/pom.xml --batch-mode --update-snapshots verify -DskipUTs
+    - run: mvn --batch-mode --update-snapshots verify -DskipUTs
 workflows:
   version: 2
   maven_build:
