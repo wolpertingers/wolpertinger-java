@@ -75,16 +75,25 @@ public class Order
      */
     public Order setImages(List<ImageReference> images)
     {
-        TreeSet<Long> configs = new TreeSet<>();
         List<ImageReference> copy = new ArrayList<>();
         for (ImageReference imageReference : images) {
             ImageReference copiedReference = imageReference;
             copiedReference.setOrder(this);
             copy.add(copiedReference);
-            configs.add(imageReference.getImage().getId());
         }
         this.images = copy;
-        configuration = Json.createArrayBuilder(configs).build().toString();
         return this;
+    }
+
+    /**
+     * Create configuration from image references.
+     */
+    public void setConfiguration()
+    {
+        TreeSet<Long> configs = new TreeSet<>();
+        for (ImageReference imageReference : images) {
+            configs.add(imageReference.getImage().getId());
+        }
+        configuration = Json.createArrayBuilder(configs).build().toString();
     }
 }

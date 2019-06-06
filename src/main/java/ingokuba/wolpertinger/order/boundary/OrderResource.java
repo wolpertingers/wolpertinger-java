@@ -77,6 +77,7 @@ public class OrderResource
             throw new BadRequestException(NO_ENTITY);
         }
         try {
+            order.setConfiguration();
             repository.store(order);
             EmailService.sendEmail(order, username, password, recipients.split(","));
         } catch (RepositoryException re) {
