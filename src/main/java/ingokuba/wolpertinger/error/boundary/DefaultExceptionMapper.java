@@ -4,6 +4,7 @@ import static ingokuba.wolpertinger.error.boundary.Error.error;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.core.Context;
@@ -43,7 +44,7 @@ public class DefaultExceptionMapper
             for (StackTraceElement stackTrace : throwable.getStackTrace()) {
                 sb.append(stackTrace.toString() + "\n");
             }
-            LOGGER.info(sb.toString());
+            LOGGER.log(Level.WARNING, throwable.getMessage(), throwable);
             logStackTrace(throwable.getCause());
         }
     }
