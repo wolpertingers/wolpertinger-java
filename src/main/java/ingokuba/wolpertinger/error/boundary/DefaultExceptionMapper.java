@@ -44,6 +44,7 @@ public class DefaultExceptionMapper
                 sb.append(stackTrace.toString() + "\n");
             }
             LOGGER.info(sb.toString());
+            logStackTrace(throwable.getCause());
         }
     }
 
