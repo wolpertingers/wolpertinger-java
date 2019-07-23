@@ -26,7 +26,7 @@ public class DefaultExceptionMapper
     @Override
     public Response toResponse(Throwable throwable)
     {
-        logStackTrace(throwable);
+        LOGGER.log(Level.WARNING, "Error caught by default mapper.", throwable);
         Response response = getMappedResponse(throwable);
 
         if (response == null) {
@@ -35,18 +35,6 @@ public class DefaultExceptionMapper
             response = Response.serverError().entity(error).build();
         }
         return response;
-    }
-
-    private void logStackTrace(Throwable throwable)
-    {
-        if (throwable != null) {
-            StringBuilder sb = new StringBuilder(throwable.getMessage()).append("\n");
-            for (StackTraceElement stackTrace : throwable.getStackTrace()) {
-                sb.append(stackTrace.toString() + "\n");
-            }
-            LOGGER.log(Level.WARNING, throwable.getMessage(), throwable);
-            logStackTrace(throwable.getCause());
-        }
     }
 
     /**
