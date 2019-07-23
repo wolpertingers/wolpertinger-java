@@ -139,6 +139,7 @@ public class OrderTest
     public void should_create_configuration_array()
     {
         Order order = validOrder();
+        order.setConfiguration();
 
         String references = order.getConfiguration();
 
@@ -160,6 +161,7 @@ public class OrderTest
         ImageReference reference1 = validImageReference(1).setImage(image1);
         ImageReference reference2 = validImageReference(2).setImage(image2);
         Order order = validOrder().setImages(asList(reference1, reference2));
+        order.setConfiguration();
 
         String references = order.getConfiguration();
 

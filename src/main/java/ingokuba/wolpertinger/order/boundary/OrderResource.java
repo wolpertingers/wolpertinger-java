@@ -1,19 +1,25 @@
 package ingokuba.wolpertinger.order.boundary;
 
+import static ingokuba.wolpertinger.error.boundary.ErrorUtil.NOT_FOUND;
 import static ingokuba.wolpertinger.error.boundary.ErrorUtil.NO_ENTITY;
+import static java.lang.String.format;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -24,6 +30,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.mail.EmailException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import ingokuba.wolpertinger.boundary.WolpertingerApplication.Roles;
 import ingokuba.wolpertinger.control.EmailService;
 import ingokuba.wolpertinger.control.RepositoryException;
 import ingokuba.wolpertinger.error.boundary.DefaultExceptionMapper;
@@ -49,6 +56,7 @@ public class OrderResource
     @ConfigProperty(name = "wolpertinger.OrderResource.password")
     private String          password;
 
+    @RolesAllowed(Roles.ADMIN)
     @GET
     @Produces(APPLICATION_JSON)
     public Response all()
@@ -90,5 +98,18 @@ public class OrderResource
             return new DefaultExceptionMapper().toResponse(ee);
         }
         return Response.status(CREATED).entity(order).build();
+    }
+
+    @RolesAllowed(Roles.ADMIN)
+    @DELETE
+    @Path("{id}")
+    public Response delete(@PathParam(Order.Fields.id) long id)
+    {
+        Order order = repository.get(id);
+        if (order == null) {
+            throw new NotFoundException(format(NOT_FOUND, id));
+        }
+        repository.delete(order);
+        return Response.status(NO_CONTENT).build();
     }
 }
