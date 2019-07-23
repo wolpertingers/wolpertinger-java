@@ -1,5 +1,7 @@
 # <img src="logo.png" width="100"/> Wolpertinger JavaEE backend
 
+[![CircleCI](https://circleci.com/gh/ingokuba/wolpertinger-java.svg?style=svg)](https://circleci.com/gh/ingokuba/wolpertinger-java)
+
 ## Project setup
 The project is built with maven and deployed in docker containers.
 
