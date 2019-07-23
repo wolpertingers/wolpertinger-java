@@ -39,7 +39,7 @@ public class DefaultExceptionMapper
     private void logStackTrace(Throwable throwable)
     {
         if (throwable != null) {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(throwable.getMessage()).append("\n");
             for (StackTraceElement stackTrace : throwable.getStackTrace()) {
                 sb.append(stackTrace.toString() + "\n");
             }
